@@ -1,0 +1,82 @@
+body {
+    font-family: 'Segoe UI', Helvetica, arial, freesans, clean, sans-serif;
+}
+
+div#container {
+    -webkit-app-region: drag;
+    user-select: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(130,130,130,0.5);
+    border: 1px solid #777;
+    padding: 45px 10px 10px 10px;
+}
+
+div#container.active {
+    box-shadow: 0 0 8px rgba(255,225,138,0.5);
+    border: 1px solid #ffd56c;
+}
+
+div#container * {
+    -webkit-app-region: no-drag;
+}
+
+div#container > h1.title {
+    -webkit-app-region: drag;
+    z-index: 9999;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 40px;
+    left: 0;
+    margin: 0;
+    padding: 0 10px 0 44px;
+    line-height: 35px;
+    font-weight: normal;
+    font-size: 12px;
+    cursor: default;
+    background-image: url(../images/icon.svg);
+    background-position: 10px 5px;
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    color: #777;
+}
+
+div#container.active > h1.title {
+    color: #000;
+}
+
+div#container > button.close {
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 35px;
+    font-size: 14px;
+}
+
+div#container > button.close > span {
+    color: #777;
+}
+
+div#container > button.close:focus,
+div#container > button.close:active,
+div#container > button.close:hover {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+div#container > button.close:hover > span {
+    color: #000;
+}
+
+.command {
+    color: #555;
+    font-family: monospace;
+    font-size: 12px;
+}

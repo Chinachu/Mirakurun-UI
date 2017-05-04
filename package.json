@@ -1,0 +1,60 @@
+{
+  "name": "mirakurun-ui",
+  "productName": "Mirakurun UI",
+  "version": "1.0.0",
+  "description": "Mirakurun's Desktop UI Application.",
+  "homepage": "https://github.com/Chinachu/Mirakurun-UI",
+  "keywords": [
+    "mirakurun",
+    "chinachu",
+    "dtv"
+  ],
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "package.win32": "electron-packager ./ mirakurun-ui --platform=win32 --arch=ia32 --icon=app/images/icon.ico --out=dist --asar --overwrite",
+    "package.darwin": "electron-packager ./ mirakurun-ui --platform=darwin --arch=x64 --out=dist --overwrite",
+    "build.win32": "build --win --ia32",
+    "test": "eslint app/**/*.js"
+  },
+  "build": {
+    "appId": "moe.chinachu.mirakurun.ui",
+    "copyright": "Chinatsu Yoshikawa",
+    "compression": "maximum",
+    "win": {
+      "target": "nsis-web",
+      "icon": "app/images/icon.ico"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chinachu/Mirakurun-UI.git"
+  },
+  "author": "kanreisa (https://github.com/kanreisa)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Chinachu/Mirakurun-UI/issues"
+  },
+  "dependencies": {
+    "electron-settings": "^3.0.14",
+    "flagrate": "^1.0.0-beta.20",
+    "mirakurun": "^2.3.1"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.4.37",
+    "@types/electron-settings": "^3.0.0",
+    "@types/node": "^7.0.16",
+    "electron": "^1.6.6",
+    "electron-builder": "^17.1.2",
+    "electron-packager": "^8.7.0",
+    "eslint": "^3.19.0",
+    "eslint-config-defaults": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=7.4.0"
+  },
+  "os": [
+    "darwin",
+    "win32"
+  ]
+}
