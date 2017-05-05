@@ -1,14 +1,11 @@
-/*eslint no-unused-vars: 0 */
 /*globals flagrate */
 /// <reference path="../../node_modules/flagrate/index.d.ts" />
 "use strict";
 
-const settings = require("electron-settings");
-const electron = require("electron");
-const remote = electron.remote;
-const regexp = require("../regexp");
-
 window.addEventListener("DOMContentLoaded", () => {
+
+    const electron = require("electron");
+    const remote = electron.remote;
 
     const container = flagrate.Element.extend(document.getElementById("container"));
 

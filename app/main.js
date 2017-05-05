@@ -87,6 +87,14 @@ function init() {
     tray.setToolTip(`${app.getName()} - N/A`);
     tray.setContextMenu(menu);
 
+    tray.on("click", () => {
+        if (mirakurun.host) {
+            showStatus();
+        } else {
+            showPref();
+        }
+    });
+
     prefWindow = new electron.BrowserWindow({
         icon: icon.normal,
         width: 400,

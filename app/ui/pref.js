@@ -1,8 +1,11 @@
-/*globals flagrate, settings, regexp */
+/*globals flagrate */
 /// <reference path="../../node_modules/flagrate/index.d.ts" />
 "use strict";
 
 window.addEventListener("DOMContentLoaded", () => {
+
+    const settings = require("electron-settings");
+    const regexp = require("../regexp");
 
     const container = flagrate.Element.extend(document.getElementById("container"));
 
