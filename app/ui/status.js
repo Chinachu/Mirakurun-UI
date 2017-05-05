@@ -44,7 +44,11 @@ window.addEventListener("DOMContentLoaded", async () => {
             {
                 key: "logs",
                 label: "Logs",
-                element: logsElement
+                element: logsElement,
+                onSelect: () => {
+                    const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
+                    logsElement.scrollTop = scrollBottom;
+                }
             },
             {
                 key: "version",
@@ -84,6 +88,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     }).insertTo(tunersElement);
 
     function updateTuners() {
+        if (!tunersElement.exists()) {
+            return;
+        }
+
         const tuners = remote.getGlobal("tuners");
         const rows = tuners.map(tuner => {
             let menuItems;
@@ -168,7 +176,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
             const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
             const isScrollable = (scrollBottom - 40) < logsElement.scrollTop;
-            if (isScrollable) {
+            if (logsElement.exists() &&  isScrollable) {
                 logsElement.scrollTop = scrollBottom;
             }
         }
