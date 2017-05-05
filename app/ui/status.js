@@ -14,8 +14,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     let status/*, logStream*/;
     try {
         status = await mirakurun.getStatus();
-        // logStream = await mirakurun.getLogStream();
-        // remote.BrowserWindow.getFocusedWindow().once("closed", () => { logStream.destroy(); });
     } catch (e) {
         console.error(e);
         container.insertText("Connection Failed.");
@@ -29,8 +27,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     title.insertText(` - Mirakurun ${status.version} ${status.process.arch} (${status.process.platform})`);
 
     const tunersElement = new flagrate.Element();
+    const logsElement = new flagrate.Element().addClassName("logs");
     const versionElement = new flagrate.Element();
-    // const logsElement = new flagrate.Element();
 
     new flagrate.createTab({
         fill: true,
@@ -44,15 +42,15 @@ window.addEventListener("DOMContentLoaded", async () => {
                 }
             },
             {
-                key: "version",
-                label: "Version",
-                element: versionElement
-            }/* ,
-            {
                 key: "logs",
                 label: "Logs",
                 element: logsElement
-            } */
+            },
+            {
+                key: "version",
+                label: "Version",
+                element: versionElement
+            }
         ]
     }).insertTo(container);
 
@@ -149,6 +147,34 @@ window.addEventListener("DOMContentLoaded", async () => {
     setInterval(updateTuners, 3000);
 
     /*
+        Logs
+    */
+    (async () => {
+        try {
+            const logStream = await mirakurun.getLogStream();
+            logStream.setEncoding("utf8");
+            logStream.on("data", logProcessor);
+            logStream.on("end", () => focusedWindow.reload());
+            window.addEventListener("beforeunload", () => logStream.destroy());
+        } catch (e) {
+        }
+
+        function logProcessor(line) {
+            const parsed = line.match(/^[0-9.T:+\-]+ ([a-z]+): /);
+            const level = parsed ? parsed[1] : "other";
+            new flagrate.Element("div", {
+                "class": level
+            }).insertText(line).insertTo(logsElement);
+
+            const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
+            const isScrollable = (scrollBottom - 40) < logsElement.scrollTop;
+            if (isScrollable) {
+                logsElement.scrollTop = scrollBottom;
+            }
+        }
+    })();
+
+    /*
         Version
     */
     (async () => {
@@ -229,8 +255,4 @@ window.addEventListener("DOMContentLoaded", async () => {
             }).open();
         }
     })();
-
-    /* logStream.on("data", data => {
-        logsElement.insertText(data);
-    }); */
 });

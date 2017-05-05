@@ -21,7 +21,7 @@ div#container.active {
     border: 1px solid #ffd56c;
 }
 
-div#container * {
+div#container > * {
     -webkit-app-region: no-drag;
 }
 
@@ -79,4 +79,57 @@ div#container > button.close:hover > span {
     color: #555;
     font-family: monospace;
     font-size: 12px;
+}
+
+div.logs {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 20px;
+    overflow-y: scroll;
+    background: #1b1b1b;
+    color: #fff;
+    font-family: "Yu Gothic UI", 'Segoe UI', sans-serif;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+div.logs:hover {
+    -webkit-app-region: no-drag;
+    user-select: text;
+}
+
+div.logs > div {
+    padding: 1px 10px 2px;
+}
+
+div.logs > div:hover {
+    background: #000;
+}
+
+div.logs > div.debug {
+    color: #bbbcde;
+}
+
+div.logs > div.info {
+    color: #eee;
+}
+
+div.logs > div.warn {
+    color: #f6ad49;
+}
+
+div.logs > div.error {
+    color: #e95464;
+}
+
+div.logs > div.fatal {
+    color: #fff;
+    background: #c9171e;
+}
+
+div.logs > div.other {
+    color: #bbb;
 }
