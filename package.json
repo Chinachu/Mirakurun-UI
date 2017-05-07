@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "electron-settings": "^3.0.14",
+    "electron-updater": "^1.14.4",
     "flagrate": "^1.0.0-beta.20",
     "mirakurun": "^2.4.1"
   },

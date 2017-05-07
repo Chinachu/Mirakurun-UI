@@ -18,6 +18,7 @@
 const electron = require("electron");
 const app = electron.app;
 const settings = require("electron-settings");
+const autoUpdater = require("electron-updater").autoUpdater;
 const Mirakurun = require("mirakurun").default;
 const regexp = require("./regexp");
 const pkg = require("../package.json");
@@ -31,6 +32,13 @@ const icon = {
     offline: electron.nativeImage.createFromPath(`${__dirname}/images/icon-gray.png`),
     active: electron.nativeImage.createFromPath(`${__dirname}/images/icon-active.png`)
 };
+
+autoUpdater.on("update-downloaded", () => {
+    // Wait 5 seconds, then quit and install
+    // In your application, you don't need to wait 5 seconds.
+    // You could call autoUpdater.quitAndInstall(); immediately
+    setTimeout(() => autoUpdater.quitAndInstall(), 5000);
+});
 
 app.on("ready", init);
 
@@ -113,6 +121,9 @@ function init() {
     setTimeout(checker, 1000);
     settings.watch("host", () => checkRetryTimer = setTimeout(checker, 1500));
     settings.watch("port", () => checkRetryTimer = setTimeout(checker, 1500));
+
+    autoUpdater.allowPrerelease = true;// TODO
+    setInterval(() => autoUpdater.checkForUpdates(), 1000 * 60 * 60 * 6);
 }
 
 async function checker() {
