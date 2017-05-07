@@ -18,7 +18,8 @@
 const electron = require("electron");
 const app = electron.app;
 const settings = require("electron-settings");
-const autoUpdater = require("electron-updater").autoUpdater;
+const { autoUpdater } = require("electron-updater");
+const isDev = require('electron-is-dev');
 const Mirakurun = require("mirakurun").default;
 const regexp = require("./regexp");
 const pkg = require("../package.json");
@@ -122,8 +123,11 @@ function init() {
     settings.watch("host", () => checkRetryTimer = setTimeout(checker, 1500));
     settings.watch("port", () => checkRetryTimer = setTimeout(checker, 1500));
 
-    autoUpdater.allowPrerelease = true;// TODO
-    setInterval(() => autoUpdater.checkForUpdates(), 1000 * 60 * 60 * 6);
+    if (!isDev) {
+        autoUpdater.allowPrerelease = true;// TODO
+        setInterval(() => autoUpdater.checkForUpdates(), 1000 * 60 * 60 * 6);
+        setTimeout(() => autoUpdater.checkForUpdates(), 5000);
+    }
 }
 
 async function checker() {
