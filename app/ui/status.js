@@ -174,6 +174,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         let buf = "";
 
         function logProcessor(data) {
+            let scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.clientHeight);
+            const isScrollable = (scrollBottom - 50) < logsElement.scrollTop;
+
             buf += data;
             for (let i = 0; i < buf.length; i++) {
                 if (buf[i] !== "\n") {
@@ -190,9 +193,8 @@ window.addEventListener("DOMContentLoaded", async () => {
                 tabButton.setLabel(`Logs (${cnt})`);
             }
 
-            const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
-            const isScrollable = (scrollBottom - 50) < logsElement.scrollTop;
             if (logsElement.exists() &&  isScrollable) {
+                scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.clientHeight);
                 logsElement.scrollTop = scrollBottom;
             }
         }
