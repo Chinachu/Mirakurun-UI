@@ -12,9 +12,8 @@
   "main": "app/main.js",
   "scripts": {
     "start": "electron .",
-    "package.win32": "electron-packager ./ mirakurun-ui --platform=win32 --arch=ia32 --icon=app/images/icon.ico --out=dist --asar --overwrite",
-    "package.darwin": "electron-packager ./ mirakurun-ui --platform=darwin --arch=x64 --extend-info=./Info.plist --icon=app/images/icon.icns --out=dist --overwrite",
     "build.win32": "build --win --ia32",
+    "build.darwin": "build --mac",
     "test": "eslint app/**/*.js"
   },
   "build": {
@@ -24,6 +23,11 @@
     "win": {
       "target": "nsis-web",
       "icon": "app/images/icon.ico"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "app/images/icon.icns",
+      "extendInfo": "./Info.plist"
     }
   },
   "repository": {
