@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const logsElement = new flagrate.Element().addClassName("logs");
     const versionElement = new flagrate.Element();
 
-    new flagrate.createTab({
+    const tab = new flagrate.createTab({
         fill: true,
         tabs: [
             {
@@ -162,23 +162,47 @@ window.addEventListener("DOMContentLoaded", async () => {
             const logStream = await mirakurun.getLogStream();
             logStream.setEncoding("utf8");
             logStream.on("data", logProcessor);
-            logStream.on("end", () => focusedWindow.reload());
+            logStream.on("end", () => setTimeout(() => {
+                try { focusedWindow.reload() } catch (e) {}
+            }, 3000));
             window.addEventListener("beforeunload", () => logStream.destroy());
         } catch (e) {
         }
 
-        function logProcessor(line) {
+        const tabButton = tab.tabs[tab.indexOf("logs")]._button;
+        let cnt = 0;
+        let buf = "";
+
+        function logProcessor(data) {
+            buf += data;
+            for (let i = 0; i < buf.length; i++) {
+                if (buf[i] !== "\n") {
+                    continue;
+                }
+                const line = buf.slice(0, i);
+                buf = buf.slice(i + 1);
+                i = 0;
+                logParser(line);
+                cnt++;
+                if (cnt > 500) {
+                    logsElement.children[0].remove();
+                }
+                tabButton.setLabel(`Logs (${cnt})`);
+            }
+
+            const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
+            const isScrollable = (scrollBottom - 50) < logsElement.scrollTop;
+            if (logsElement.exists() &&  isScrollable) {
+                logsElement.scrollTop = scrollBottom;
+            }
+        }
+
+        function logParser(line) {
             const parsed = line.match(/^[0-9.T:+\-]+ ([a-z]+): /);
             const level = parsed ? parsed[1] : "other";
             new flagrate.Element("div", {
                 "class": level
             }).insertText(line).insertTo(logsElement);
-
-            const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
-            const isScrollable = (scrollBottom - 40) < logsElement.scrollTop;
-            if (logsElement.exists() &&  isScrollable) {
-                logsElement.scrollTop = scrollBottom;
-            }
         }
     })();
 
