@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const container = flagrate.Element.extend(document.getElementById("container"));
 
-    let status/*, logStream*/;
+    let status;
     try {
         status = await mirakurun.getStatus();
     } catch (e) {
