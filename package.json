@@ -13,7 +13,7 @@
   "scripts": {
     "start": "electron .",
     "package.win32": "electron-packager ./ mirakurun-ui --platform=win32 --arch=ia32 --icon=app/images/icon.ico --out=dist --asar --overwrite",
-    "package.darwin": "electron-packager ./ mirakurun-ui --platform=darwin --arch=x64 --out=dist --overwrite",
+    "package.darwin": "electron-packager ./ mirakurun-ui --platform=darwin --arch=x64 --extend-info=./Info.plist --icon=app/images/icon.icns --out=dist --overwrite",
     "build.win32": "build --win --ia32",
     "test": "eslint app/**/*.js"
   },
