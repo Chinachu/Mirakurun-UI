@@ -163,7 +163,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             logStream.setEncoding("utf8");
             logStream.on("data", logProcessor);
             logStream.on("end", () => setTimeout(() => {
-                try { focusedWindow.reload() } catch (e) {}
+                try { focusedWindow.reload(); } catch (e) {}
             }, 3000));
             window.addEventListener("beforeunload", () => logStream.destroy());
         } catch (e) {
