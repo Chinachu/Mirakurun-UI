@@ -11,7 +11,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const div = new flagrate.Element().insertTo(container);
 
-    let current = `${settings.get("host")}:${settings.get("port")}`;
+    let current = "";
+    if (settings.get("host") && settings.get("port")) {
+        current = `${settings.get("host")}:${settings.get("port")}`;
+    }
+
     let saveHostTimer;
 
     const form = new flagrate.Form({
