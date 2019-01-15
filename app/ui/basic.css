@@ -54,7 +54,7 @@ div#container > button.close {
     z-index: 9999;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 0.5px;
     width: 40px;
     height: 35px;
     font-size: 14px;
@@ -117,11 +117,17 @@ div.logs > div.info {
     color: #eee;
 }
 
-div.logs > div.warn {
+div.logs > div.type-create {
+    color: #c3d825;
+}
+
+div.logs > div.warn,
+div.logs > div.type-update {
     color: #f6ad49;
 }
 
-div.logs > div.error {
+div.logs > div.error,
+div.logs > div.type-redefine {
     color: #e95464;
 }
 

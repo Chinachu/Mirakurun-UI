@@ -236,13 +236,13 @@ function showStatus() {
 
     statusWindow = new electron.BrowserWindow({
         icon: icon.normal,
-        width: 600,
-        height: 350,
+        width: 800,
+        height: 400,
         minWidth: 600,
         minHeight: 300,
         frame: false,
         closable: true,
-        alwaysOnTop: true,
+        alwaysOnTop: false,
         transparent: true
     });
 

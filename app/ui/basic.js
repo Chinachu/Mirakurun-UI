@@ -43,4 +43,16 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         }
     }).insertTo(container);
+
+    new flagrate.ContextMenu({
+        target: container,
+        items: [
+            {
+                label: "Open DevTools",
+                onSelect: () => {
+                    remote.BrowserWindow.getFocusedWindow().webContents.openDevTools();
+                }
+            }
+        ]
+    });
 });
