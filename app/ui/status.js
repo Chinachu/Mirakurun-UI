@@ -6,6 +6,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const electron = require("electron");
     const remote = electron.remote;
+    const semver = require("semver");
     const mirakurun = remote.getGlobal("mirakurun");
     const focusedWindow = remote.BrowserWindow.getFocusedWindow();
 
@@ -200,7 +201,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
 
         function logParser(line) {
-            const parsed = line.match(/^[0-9.T:+\-]+ ([a-z]+): /);
+            const parsed = line.match(/^[0-9.T:+-]+ ([a-z]+): /);
             const level = parsed ? parsed[1] : "other";
             new flagrate.Element("div", {
                 "class": level
@@ -228,7 +229,7 @@ window.addEventListener("DOMContentLoaded", async () => {
                 ]
             }).insertTo(versionElement);
 
-            if (version.current !== version.latest) {
+            if (semver.satisfies(version.current, "~2.8.3") === true && version.current !== version.latest) {
                 form.push({
                     label: "Update",
                     text: "click to update the Mirakurun. (only PM2 or Winser environment.)",
