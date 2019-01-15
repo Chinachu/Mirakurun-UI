@@ -29,6 +29,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const tunersElement = new flagrate.Element();
     const logsElement = new flagrate.Element().addClassName("logs");
+    const eventsElement = new flagrate.Element().addClassName("logs");
     const versionElement = new flagrate.Element();
 
     const tab = new flagrate.createTab({
@@ -49,6 +50,15 @@ window.addEventListener("DOMContentLoaded", async () => {
                 onSelect: () => {
                     const scrollBottom = Math.max(0, logsElement.scrollHeight - logsElement.getHeight());
                     logsElement.scrollTop = scrollBottom;
+                }
+            },
+            {
+                key: "events",
+                label: "Program Events",
+                element: eventsElement,
+                onSelect: () => {
+                    const scrollBottom = Math.max(0, eventsElement.scrollHeight - eventsElement.getHeight());
+                    eventsElement.scrollTop = scrollBottom;
                 }
             },
             {
@@ -206,6 +216,57 @@ window.addEventListener("DOMContentLoaded", async () => {
             new flagrate.Element("div", {
                 "class": level
             }).insertText(line).insertTo(logsElement);
+        }
+    })();
+
+    /*
+        Program Events
+    */
+    (async () => {
+        try {
+            const eventsStream = await mirakurun.getEventsStream({
+                resource: "program"
+            });
+            eventsStream.setEncoding("utf8");
+            if (eventsStream.statusCode !== 200) {
+                return;
+            }
+            eventsStream.on("data", data => {
+                data = data.match(/(\{.+\})\n,/m);
+                if (!data) {
+                    return;
+                }
+                try {
+                    eventsProcessor(JSON.parse(data[1]));
+                } catch (e) { }
+            });
+            window.addEventListener("beforeunload", () => eventsStream.destroy());
+        } catch (e) {
+        }
+
+        const tabButton = tab.tabs[tab.indexOf("events")]._button;
+        let cnt = 0;
+
+        function eventsProcessor(event) {
+            let scrollBottom = Math.max(0, eventsElement.scrollHeight - eventsElement.clientHeight);
+            const isScrollable = (scrollBottom - 50) < eventsElement.scrollTop;
+
+            cnt++;
+            if (cnt > 100) {
+                eventsElement.children[0].remove();
+            }
+            tabButton.setLabel(`Program Events (${cnt})`);
+
+            console.log(event);
+
+            new flagrate.Element("div", {
+                "class": `type-${event.type}`
+            }).insertText(`${event.type}: ${JSON.stringify(event.data)}`).insertTo(eventsElement);
+
+            if (eventsElement.exists() && isScrollable) {
+                scrollBottom = Math.max(0, eventsElement.scrollHeight - eventsElement.clientHeight);
+                eventsElement.scrollTop = scrollBottom;
+            }
         }
     })();
 
